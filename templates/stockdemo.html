@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+
+        </title>
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://code.highcharts.com/css/stocktools/gui.css">
+        <link rel="stylesheet" type="text/css" href="https://code.highcharts.com/css/annotations/popup.css">
+        <script src="https://code.highcharts.com/stock/highstock.js"></script>
+        <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+        <script src="https://code.highcharts.com/stock/indicators/indicators-all.js"></script>
+        <script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script>  
+        <script src="https://code.highcharts.com/modules/annotations-advanced.js"></script>
+        <script src="https://code.highcharts.com/modules/price-indicator.js"></script>
+        <script src="https://code.highcharts.com/modules/full-screen.js"></script>
+        <script src="https://code.highcharts.com/modules/stock-tools.js"></script>
+        <script src="https://code.highcharts.com/modules/series-label.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/modules/export-data.js"></script>
+        <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+        <script src="/js/themes/gray.js"></script>
+    
+
+        <script>
+            Highcharts.theme = {
+                colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
+                    '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+                chart: {
+                    backgroundColor: {
+                        linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+                        stops: [
+                            [0, '#2a2a2b'],
+                            [1, '#3e3e40']
+                        ]
+                    },
+                    style: {
+                        fontFamily: '\'Unica One\', sans-serif'
+                    },
+                    plotBorderColor: '#606063'
+                },
+                title: {
+                    style: {
+                        color: '#E0E0E3',
+                        textTransform: 'uppercase',
+                        fontSize: '20px'
+                    }
+                },
+                subtitle: {
+                    style: {
+                        color: '#E0E0E3',
+                        textTransform: 'uppercase'
+                    }
+                },
+                xAxis: {
+                    gridLineColor: '#707073',
+                    labels: {
+                        style: {
+                            color: '#E0E0E3'
+                        }
+                    },
+                    lineColor: '#707073',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#707073',
+                    title: {
+                        style: {
+                            color: '#A0A0A3'
+                        }
+                    }
+                },
+                yAxis: {
+                    gridLineColor: '#707073',
+                    labels: {
+                        style: {
+                            color: '#E0E0E3'
+                        }
+                    },
+                    lineColor: '#707073',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#707073',
+                    tickWidth: 1,
+                    title: {
+                        style: {
+                            color: '#A0A0A3'
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                    style: {
+                        color: '#F0F0F0'
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        dataLabels: {
+                            color: '#F0F0F3',
+                            style: {
+                                fontSize: '13px'
+                            }
+                        },
+                        marker: {
+                            lineColor: '#333'
+                        }
+                    },
+                    boxplot: {
+                        fillColor: '#505053'
+                    },
+                    candlestick: {
+                        
+                    },
+                    errorbar: {
+                        color: 'white'
+                    }
+                },
+                legend: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    itemStyle: {
+                        color: '#E0E0E3'
+                    },
+                    itemHoverStyle: {
+                        color: '#FFF'
+                    },
+                    itemHiddenStyle: {
+                        color: '#606063'
+                    },
+                    title: {
+                        style: {
+                            color: '#C0C0C0'
+                        }
+                    }
+                },
+                credits: {
+                    style: {
+                        color: '#666'
+                    }
+                },
+                labels: {
+                    style: {
+                        color: '#707073'
+                    }
+                },
+                drilldown: {
+                    activeAxisLabelStyle: {
+                        color: '#F0F0F3'
+                    },
+                    activeDataLabelStyle: {
+                        color: '#F0F0F3'
+                    }
+                },
+                navigation: {
+                    buttonOptions: {
+                        symbolStroke: '#DDDDDD',
+                        theme: {
+                            fill: '#505053'
+                        }
+                    }
+                },
+                // scroll charts
+                rangeSelector: {
+                    buttonTheme: {
+                        fill: '#505053',
+                        stroke: '#000000',
+                        style: {
+                            color: '#CCC'
+                        },
+                        states: {
+                            hover: {
+                                fill: '#707073',
+                                stroke: '#000000',
+                                style: {
+                                    color: 'white'
+                                }
+                            },
+                            select: {
+                                fill: '#000003',
+                                stroke: '#000000',
+                                style: {
+                                    color: 'white'
+                                }
+                            }
+                        }
+                    },
+                    inputBoxBorderColor: '#505053',
+                    inputStyle: {
+                        backgroundColor: '#333',
+                        color: 'silver'
+                    },
+                    labelStyle: {
+                        color: 'silver'
+                    }
+                },
+                navigator: {
+                    handles: {
+                        backgroundColor: '#666',
+                        borderColor: '#AAA'
+                    },
+                    outlineColor: '#CCC',
+                    maskFill: 'rgba(255,255,255,0.1)',
+                    series: {
+                        color: '#7798BF',
+                        lineColor: '#A6C7ED'
+                    },
+                    xAxis: {
+                        gridLineColor: '#505053'
+                    }
+                },
+                scrollbar: {
+                    barBackgroundColor: '#808083',
+                    barBorderColor: '#808083',
+                    buttonArrowColor: '#CCC',
+                    buttonBackgroundColor: '#606063',
+                    buttonBorderColor: '#606063',
+                    rifleColor: '#FFF',
+                    trackBackgroundColor: '#404043',
+                    trackBorderColor: '#404043'
+                }
+            };
+            // Apply the theme
+            Highcharts.setOptions(Highcharts.theme);
+            function ans(mak){
+                    for(var i=0;i<4;i++){
+                        document.getElementById("A").rows[2].cells[i].innerHTML="<h5></h5>"
+                    }
+                    if(mak>1){
+                        document.getElementById("A").rows[2].cells[3].innerHTML="<p></p>"
+                    }else if(mak>0 && mak<=1){
+                        document.getElementById("A").rows[2].cells[2].innerHTML="<p></p>"
+                    }else if(mak>-1 && mak<=0){
+                        document.getElementById("A").rows[2].cells[1].innerHTML="<p></p>"
+                    }else if(mak<=-1){
+                        document.getElementById("A").rows[2].cells[0].innerHTML="<p></p>"
+                    }
+                
+                
+                
+            }
+            function draw(data){
+                // split the data set into ohlc and volume
+                
+                var ohlc = [],
+                volume = [],
+                dataLength = data.length,
+                // set the allowed units for data grouping
+               
+                i = 0;
+                sname=data[0][0];
+                snum=data[0][1];
+                document.getElementById("info").innerHTML="<b>點擊link<b><br><b>得到更多<b><br><a href="+"https://tw.tradingview.com/symbols/TWSE-"+snum+"/>"+snum+"的資訊"+"</a><br>"
+                for (i=1; i < dataLength; i += 1) {
+                    ohlc.push([
+                        data[i][0], // the date
+                        data[i][1], // open
+                        data[i][2], // high
+                        data[i][3], // low
+                        data[i][4] // close
+                    ]);
+
+                    volume.push([
+                        data[i][0], // the date
+                        data[i][5] // the volume
+                    ]);
+                }
+
+
+                // create the chart
+                Highcharts.stockChart('container', {
+
+                    rangeSelector: {
+                        selected: 1
+                    },
+
+                    title: {
+                        text: sname+' Historical'
+                    },
+
+                    yAxis: [{
+                        labels: {
+                            align: 'right',
+                            x: -3
+                        },
+                        title: {
+                            text: 'OHLC'
+                        },
+                        height: '80%',
+                        lineWidth: 2,
+                        resize: {
+                            enabled: true
+                        }
+                    }, {
+                        labels: {
+                            align: 'right',
+                            x: -3
+                        },
+                        title: {
+                            text: 'Volume'
+                        },
+                        top: '85%',
+                        height: '15%',
+                        offset: 0,
+                        lineWidth: 2
+                    }],
+
+                    tooltip: {
+                        split: true
+                    },
+                    plotOptions: {
+                        series: {
+                            cursor: 'pointer',
+                            point: {
+                                events: {
+                                    click: function () {
+                                        sell(this.x,this.y)
+                                    }
+                                }
+                            }
+                        },
+                        candlestick: {
+                            color: 'green',
+                            upColor: 'red'
+                        }
+                    },
+                    series: [{
+                        type: 'candlestick',
+                        name: sname,
+                        id: sname,
+                        data: ohlc
+                    }, {
+                        type: 'column',
+                        name: 'Volume',
+                        data: volume,
+                        yAxis: 1
+                        
+                    }, {
+                        type: 'sma',
+                        linkedTo: sname,
+                        zIndex: 1,
+                        marker: {
+                            enabled: false
+                        },
+                        params: {
+                            period: 20
+                        },
+                        cursor: 'pointer',
+                            point: {    
+                                events: {
+                                    click: function () {
+                                        alert('sma: ' + this.y);
+                                    }
+                                }
+                            }
+                    },{
+                        type: 'sma',
+                        linkedTo: sname,
+                        params: {
+                            period: 10
+                        },
+                        zIndex: 1,
+                        marker: {
+                            enabled: false
+                        }
+                    }]
+                });
+                
+            };
+        
+
+            $(function () {
+                alert("ready")
+                document.getElementById("load").innerHTML="<b>技術分析:loading data...,wait a minite</b>"
+                $.ajax({                                       
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    type: 'POST',
+                    url: '/get2330',
+                    dataType: 'json',
+                    success: function(data){
+                        draw(data)
+                    }
+                
+                });
+                $.ajax({                                       
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    
+                    url: '/predict2330',
+                    dataType: 'json',
+                    success: function(data){
+                        sayhi(data)
+                    }
+                    
+                
+                });
+
+		    }); //function end
+            function sayhi(tex){
+                document.getElementById("load").innerHTML="<b>技術分析:</b>"
+                slope=tex[3]
+                $('#container2').highcharts({
+                    title: {
+                        text: tex[0]
+                    },
+
+
+                    yAxis: {
+                        title: {
+                            text: 'price'
+                        }
+                    },
+
+                    xAxis: {
+                        accessibility: {
+                            rangeDescription: 'date'
+                        }
+                    },
+
+                    plotOptions: {
+                        series: {
+                            label: {
+                                connectorAllowed: false
+                            },
+                            pointStart: 2010
+                        }
+                    },
+                    
+                    chart: {
+                        events: {
+                            load(){
+                                let chart = this;
+                            chart.stockTools.showhideBtn.click();
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'predict price',
+                        data: tex[1]
+                    },{
+                        name: 'real price',
+                        data: tex[2]
+                    }],
+                    responsive: {
+                        rules: [{
+                            condition: {
+                                maxWidth: 500
+                            },
+                            chartOptions: {
+                                legend: {
+                                    layout: 'horizontal',
+                                    align: 'center',
+                                    verticalAlign: 'bottom'
+                                }
+                            }
+                        }]
+                    }
+                });
+                ans(slope)
+            }
+            function re(num){
+                alert(num)
+                t=0;
+                dater=0
+                t=0
+                back=0
+                f=0;
+                document.getElementById("sell").innerHTML=""
+                document.getElementById("total").innerHTML=""
+                document.getElementById("load").innerHTML="<b>技術分析:loading data...,wait a minite</b>"
+                $.ajax({                    
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    url: '/get'+num,
+                    dataType: 'json',
+                    success: function(data){
+                        draw(data)
+                    }
+                });
+                $.ajax({                                       
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    
+                    url: '/predict'+num,
+                    dataType: 'json',
+                    success: function(data){
+                        sayhi(data)
+                    }
+                    
+                
+                });
+            }
+            var dater=0
+            var t=0,back=0,f=0;
+            function sell(date,close){
+                if(f==0){
+                    back=close
+                    f++;
+                }
+
+                if(date<dater){
+                    alert("不能往回交易!!!")
+                }else{
+                    document.getElementById("sell").innerHTML+="<b>"+date+" 以"+close+"交易</b><br>"
+                    t+=close-back;
+                    back=close;
+                    document.getElementById("total").innerHTML="<b>"+parseInt(t)+"</b><br>"
+                }
+                
+            }
+        </script>
+        <style>
+            p{
+                
+                background-color: red;
+                width: 60px;
+                height: 60px;
+            }
+            b{
+                font-size: large;
+                color: white;
+            }
+            #stock{
+                color: white;
+                border-style: double;
+                border-width: thick;
+                border-color:white;
+                width: 30%;
+            }
+            
+            h2{
+                width: 60%;
+                background-color:steelblue;
+                height: 50px;
+                text-align: left;
+                text-shadow: 10px;
+                align-self: center;
+                color: white;
+                font-weight: bold;
+                margin: 0px;
+                padding: 10px;
+                border-radius: 20px;
+                
+            }
+            #pridict{
+                background-color:slategray;
+                color: red;
+                width: 250px;
+                height: 400px;
+                position:absolute;
+                top: 50px;
+                left: 1000px;
+                
+            }
+            h3{
+                color: red;
+                font-size: large;
+
+            }
+            label{
+                font-weight: bold;
+            }
+            #container2{
+                position: absolute;
+                left: 910px;
+                top: 380px;
+                height: 450px;
+                width: 530px;
+            }
+            table{
+                width: 360px;
+                color: white;
+                border-style: double;
+                border-width: thick;
+                border-color: red;
+            }
+            td {
+                border: 1px solid #333;
+                border-collapse: collapse;
+                height: 70px;
+                align-items: center;
+            }
+            th{
+               
+                border: 1px solid #333;
+                border-collapse: collapse;
+                height: 50px;
+                width: 90px;
+            }
+
+            thead,
+            tfoot {
+                background-color: #333;
+                color: #fff;
+            }
+            body{
+                background-color: black;
+            }
+            #info{
+                background-color: black;
+                width: 100px;
+                height: 140px;
+                border: 10px solid green;
+                padding: 20px;
+                position: absolute;
+                left: 1270px;
+                top: 140px; 
+            }
+            a{
+                color: lime;
+                font: bold;
+            }
+            #sellT{
+                position: absolute;
+                top: 880px;
+                color: white;
+            }
+            #sell{
+                background-color: black;
+                width: 400px;
+                height: 200px;
+                border: 8px solid white;
+                padding: 20px;
+                position: absolute;
+                
+                top: 50px; 
+            }
+            #total{
+                background-color: black;
+                width: 100px;
+                height: 60px;
+                border: 4px solid white;
+                padding: 5px;
+                position: absolute;
+                top: 50px;
+                left: 420px; 
+            }
+        </style>
+        
+    </head>
+    <body>
+        
+        
+        <h2>股票走向預測</h2>
+        
+        <div id="stock">
+            <label>請選擇股票編號</label>
+            <select name="stocks" onChange="re(this.options[this.selectedIndex].value)">
+                <option value="">請選擇股票編號</option>
+                <option value="2330" selected>2330</option>
+                <option value="2454">2454</option>
+                <option value="2303">2303</option>
+                <option value="Apple">Apple</option>
+                <option value="Google">Google</option>
+            </select>
+        </div>
+        <div id="container" class="chart" style="height: 750px; width: 900px"></div>
+        <div id="info">
+        </div>
+        <div id="container2" class="chart"></div>
+        <div id="predict">
+
+            <b id="load">技術分析:</b>
+            <table id="A">
+                <thead>
+                    <tr>
+                        <td colspan="4">建議操作模式</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>強力賣出</th>
+                        <th>賣出</th>
+                        <th>買入</th>
+                        <th>強力買入</th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+        <div id="sellT">
+            獲利虧損計算<br>
+        <div>
+        <div id="sell">
+            
+        </div>
+        <div id="total">
+            
+        </div>
+       
+          
+    </body>
+    
+</html>
